@@ -1,0 +1,14 @@
+# Local credentials and machine-specific configuration
+.env
+
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local runtime logs
+logs/
+chats/
+
+# Original local screenshot; the curated portfolio copy is in assets/screenshots/.
+screen_shoot.png

@@ -1,0 +1,6 @@
+# Official Python SDK for Groq's OpenAI-compatible API.
+groq
+rich
+pypdf
+python-docx
+openpyxl
