@@ -92,7 +92,8 @@ You > Summarize the document and list its three main risks.
 
 ```text
 ai-assist/
-├── ai_assist.py              # Terminal application and Groq integration
+├── ai_assist.py              # Small launcher; keeps `python ai_assist.py` stable
+├── console_app/              # UI, API, history, files, logging, and chat modules
 ├── config.py                 # Minimal .env loader and configuration
 ├── requirements.txt          # Runtime dependencies
 ├── requirements-dev.txt      # Test dependencies
@@ -103,6 +104,23 @@ ai-assist/
 ├── chats/                    # Local chat history, ignored by Git
 └── logs/                     # Local diagnostics, ignored by Git
 ```
+
+## Architecture
+
+`ai_assist.py` is deliberately kept as a small backward-compatible launcher.
+The `console_app` package separates responsibilities so that UI changes do not
+affect Groq requests, and file parsing does not affect chat persistence:
+
+| Module | Responsibility |
+| --- | --- |
+| `app.py` | Command loop, application state, and error-flow coordination. |
+| `ui.py` | All Rich panels, tables, input, and messages. |
+| `groq_client.py` | Groq requests, source extraction, and rate-limit parsing. |
+| `chat.py` | System prompt, conversation state, and context limits. |
+| `files.py` | Safe local extraction from supported files. |
+| `history.py` | Atomic JSON chat persistence and history listing. |
+| `logging_setup.py` | Private rotating diagnostic logs. |
+| `environment.py` | PyCharm/Codex path-conflict and Windows-console safeguards. |
 
 ## Tests
 
@@ -138,7 +156,7 @@ GitHub Actions runs the tests automatically on Python 3.11 and 3.12 for pushes a
 - [ ] Add retry with exponential backoff for temporary API failures.
 - [ ] Add an optional Ollama backend for local Qwen/Gemma models.
 - [ ] Add image analysis through a separate Groq vision model.
-- [ ] Split the application into dedicated UI, history, and API modules.
+- [x] Split the application into dedicated UI, history, file, and API modules.
 
 ## License
 
